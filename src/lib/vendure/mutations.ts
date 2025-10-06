@@ -111,3 +111,129 @@ export const RemovePromotionCodeMutation = graphql(`
         }
     }
 `);
+
+export const CreateCustomerAddressMutation = graphql(`
+    mutation CreateCustomerAddress($input: CreateAddressInput!) {
+        createCustomerAddress(input: $input) {
+            id
+            fullName
+            company
+            streetLine1
+            streetLine2
+            city
+            province
+            postalCode
+            country {
+                id
+                code
+                name
+            }
+            phoneNumber
+            defaultShippingAddress
+            defaultBillingAddress
+        }
+    }
+`);
+
+export const SetOrderShippingAddressMutation = graphql(`
+    mutation SetOrderShippingAddress($input: CreateAddressInput!) {
+        setOrderShippingAddress(input: $input) {
+            __typename
+            ... on Order {
+                id
+                code
+                shippingAddress {
+                    fullName
+                    company
+                    streetLine1
+                    streetLine2
+                    city
+                    province
+                    postalCode
+                    country
+                    phoneNumber
+                }
+            }
+            ... on ErrorResult {
+                errorCode
+                message
+            }
+        }
+    }
+`);
+
+export const SetOrderBillingAddressMutation = graphql(`
+    mutation SetOrderBillingAddress($input: CreateAddressInput!) {
+        setOrderBillingAddress(input: $input) {
+            __typename
+            ... on Order {
+                id
+                code
+                billingAddress {
+                    fullName
+                    company
+                    streetLine1
+                    streetLine2
+                    city
+                    province
+                    postalCode
+                    country
+                    phoneNumber
+                }
+            }
+            ... on ErrorResult {
+                errorCode
+                message
+            }
+        }
+    }
+`);
+
+export const SetOrderShippingMethodMutation = graphql(`
+    mutation SetOrderShippingMethod($shippingMethodId: [ID!]!) {
+        setOrderShippingMethod(shippingMethodId: $shippingMethodId) {
+            __typename
+            ... on Order {
+                id
+                code
+                shippingWithTax
+                totalWithTax
+                shippingLines {
+                    shippingMethod {
+                        id
+                        name
+                        description
+                    }
+                    priceWithTax
+                }
+            }
+            ... on ErrorResult {
+                errorCode
+                message
+            }
+        }
+    }
+`);
+
+export const AddPaymentToOrderMutation = graphql(`
+    mutation AddPaymentToOrder($input: PaymentInput!) {
+        addPaymentToOrder(input: $input) {
+            __typename
+            ... on Order {
+                id
+                code
+                state
+                payments {
+                    id
+                    method
+                    amount
+                    state
+                }
+            }
+            ... on ErrorResult {
+                errorCode
+                message
+            }
+        }
+    }
+`);

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Minus, Plus, X, Tag } from 'lucide-react';
+import { formatPrice } from '@/lib/format';
 
 async function removeFromCart(lineId: string) {
   'use server';
@@ -103,11 +104,7 @@ export default async function CartPage() {
                   SKU: {line.productVariant.sku}
                 </p>
                 <p className="text-sm text-muted-foreground mt-2 sm:hidden">
-                  {(line.unitPriceWithTax / 100).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: activeOrder.currencyCode,
-                  })}{' '}
-                  each
+                  {formatPrice(line.unitPriceWithTax, activeOrder.currencyCode)} each
                 </p>
 
                 <div className="flex items-center gap-3 mt-4">
@@ -166,10 +163,7 @@ export default async function CartPage() {
 
                   <div className="sm:hidden ml-auto">
                     <p className="font-semibold text-lg">
-                      {(line.linePriceWithTax / 100).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: activeOrder.currencyCode,
-                      })}
+                      {formatPrice(line.linePriceWithTax, activeOrder.currencyCode)}
                     </p>
                   </div>
                 </div>
@@ -177,17 +171,10 @@ export default async function CartPage() {
 
               <div className="hidden sm:block text-right flex-shrink-0">
                 <p className="font-semibold text-lg">
-                  {(line.linePriceWithTax / 100).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: activeOrder.currencyCode,
-                  })}
+                  {formatPrice(line.linePriceWithTax, activeOrder.currencyCode)}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {(line.unitPriceWithTax / 100).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: activeOrder.currencyCode,
-                  })}{' '}
-                  each
+                  {formatPrice(line.unitPriceWithTax, activeOrder.currencyCode)} each
                 </p>
               </div>
             </div>
@@ -202,10 +189,7 @@ export default async function CartPage() {
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>
-                  {(activeOrder.subTotalWithTax / 100).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: activeOrder.currencyCode,
-                  })}
+                  {formatPrice(activeOrder.subTotalWithTax, activeOrder.currencyCode)}
                 </span>
               </div>
               {activeOrder.discounts && activeOrder.discounts.length > 0 && (
@@ -214,10 +198,7 @@ export default async function CartPage() {
                     <div key={index} className="flex justify-between text-sm text-green-600">
                       <span>{discount.description}</span>
                       <span>
-                        {(discount.amountWithTax / 100).toLocaleString('en-US', {
-                          style: 'currency',
-                          currency: activeOrder.currencyCode,
-                        })}
+                        {formatPrice(discount.amountWithTax, activeOrder.currencyCode)}
                       </span>
                     </div>
                   ))}
@@ -227,10 +208,7 @@ export default async function CartPage() {
                 <span className="text-muted-foreground">Shipping</span>
                 <span>
                   {activeOrder.shippingWithTax > 0
-                    ? (activeOrder.shippingWithTax / 100).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: activeOrder.currencyCode,
-                      })
+                    ? formatPrice(activeOrder.shippingWithTax, activeOrder.currencyCode)
                     : 'Calculated at checkout'}
                 </span>
               </div>
@@ -240,10 +218,7 @@ export default async function CartPage() {
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span>
-                  {(activeOrder.totalWithTax / 100).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: activeOrder.currencyCode,
-                  })}
+                  {formatPrice(activeOrder.totalWithTax, activeOrder.currencyCode)}
                 </span>
               </div>
             </div>

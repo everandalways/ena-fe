@@ -13,10 +13,15 @@ import { query } from "@/lib/vendure/api";
 import { GetActiveCustomerQuery, GetActiveOrderQuery } from "@/lib/vendure/queries";
 import { SearchInput } from "@/components/search-input";
 import { getTopCollections } from "@/lib/collections";
+import { CurrencyPicker } from "@/components/currency-picker";
+import { LanguagePicker } from "@/components/language-picker";
+import { getLanguageCode } from "@/lib/settings";
 
 export async function Navbar() {
+    const languageCode = await getLanguageCode();
+
     const [collections, customerResult, orderResult] = await Promise.all([
-        getTopCollections(),
+        getTopCollections(languageCode),
         query(GetActiveCustomerQuery, undefined, { useAuthToken: true }),
         query(GetActiveOrderQuery, undefined, { useAuthToken: true, tags: ['cart'] }),
     ]);
@@ -55,6 +60,16 @@ export async function Navbar() {
                             <SearchInput />
                         </div>
 
+                        {/* Language Picker */}
+                        <div className="hidden md:block">
+                            <LanguagePicker />
+                        </div>
+
+                        {/* Currency Picker */}
+                        <div className="hidden md:block">
+                            <CurrencyPicker />
+                        </div>
+
                         {/* Cart Button */}
                         <Button variant="ghost" size="icon" asChild className="relative">
                             <Link href="/cart">
@@ -83,13 +98,10 @@ export async function Navbar() {
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
-                                        <Link href="/account">Profile</Link>
+                                        <Link href="/account/profile">Profile</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
-                                        <Link href="/orders">Orders</Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                        <Link href="/settings">Settings</Link>
+                                        <Link href="/account/orders">Orders</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>

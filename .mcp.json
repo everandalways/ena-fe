@@ -3,13 +3,6 @@
     "chrome-devtools": {
       "command": "npx",
       "args": ["chrome-devtools-mcp@latest"]
-    },
-    "mcp-graphql": {
-      "command": "npx",
-      "args": ["mcp-graphql"],
-      "env": {
-        "ENDPOINT": "https://readonlydemo.vendure.io/shop-api"
-      }
     }
   }
 }

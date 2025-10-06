@@ -2,9 +2,12 @@ import { graphql, type ResultOf, type VariablesOf } from '@/graphql';
 import type { TadaDocumentNode } from 'gql.tada';
 import { print } from 'graphql';
 import { getAuthToken } from '@/lib/auth';
+import { getCurrencyCode, getLanguageCode } from '@/lib/settings';
 
 const VENDURE_API_URL = process.env.VENDURE_SHOP_API_URL || process.env.NEXT_PUBLIC_VENDURE_SHOP_API_URL;
+const VENDURE_CHANNEL_TOKEN = process.env.VENDURE_CHANNEL_TOKEN || process.env.NEXT_PUBLIC_VENDURE_CHANNEL_TOKEN || '__default_channel__';
 const VENDURE_AUTH_TOKEN_HEADER = 'vendure-auth-token';
+const VENDURE_CHANNEL_TOKEN_HEADER = 'vendure-token';
 
 if (!VENDURE_API_URL) {
   throw new Error('VENDURE_SHOP_API_URL or NEXT_PUBLIC_VENDURE_SHOP_API_URL environment variable is not set');
@@ -12,10 +15,14 @@ if (!VENDURE_API_URL) {
 
 interface VendureRequestOptions {
   languageCode?: string;
+  currencyCode?: string;
   token?: string;
   useAuthToken?: boolean;
+  channelToken?: string;
   fetch?: RequestInit;
   tags?: string[];
+  skipLanguageCookie?: boolean;
+  skipCurrencyCookie?: boolean;
 }
 
 interface VendureResponse<T> {
@@ -31,13 +38,19 @@ function extractAuthToken(headers: Headers): string | null {
 }
 
 /**
- * Build the API URL with optional language code
+ * Build the API URL with optional language code and currency code
  */
-function buildUrl(languageCode?: string): string {
+function buildUrl(languageCode?: string, currencyCode?: string): string {
   const url = new URL(VENDURE_API_URL!);
+
   if (languageCode) {
     url.searchParams.set('languageCode', languageCode);
   }
+
+  if (currencyCode) {
+    url.searchParams.set('currencyCode', currencyCode);
+  }
+
   return url.toString();
 }
 
@@ -50,7 +63,7 @@ export async function query<TResult, TVariables>(
     ? [variables?: TVariables, options?: VendureRequestOptions]
     : [variables: TVariables, options?: VendureRequestOptions]
 ): Promise<{ data: TResult; token?: string }> {
-  const { languageCode, token, useAuthToken, fetch: fetchOptions, tags } = options || {};
+  const { languageCode, currencyCode, token, useAuthToken, channelToken, fetch: fetchOptions, tags, skipLanguageCookie, skipCurrencyCookie } = options || {};
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -67,7 +80,24 @@ export async function query<TResult, TVariables>(
     headers['Authorization'] = `Bearer ${authToken}`;
   }
 
-  const response = await fetch(buildUrl(languageCode), {
+  // Set the channel token header (use provided channelToken or default)
+  headers[VENDURE_CHANNEL_TOKEN_HEADER] = channelToken || VENDURE_CHANNEL_TOKEN;
+
+  // Fetch from cookies if not provided and skip flags are not set
+  let finalLanguageCode = languageCode;
+  let finalCurrencyCode = currencyCode;
+
+  if (!skipLanguageCookie && !languageCode) {
+    finalLanguageCode = await getLanguageCode();
+  }
+
+  if (!skipCurrencyCookie && !currencyCode) {
+    finalCurrencyCode = await getCurrencyCode();
+  }
+
+  const url = buildUrl(finalLanguageCode, finalCurrencyCode);
+
+  const response = await fetch(url, {
     ...fetchOptions,
     method: 'POST',
     headers,

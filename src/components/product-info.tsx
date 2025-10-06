@@ -8,6 +8,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ShoppingCart, CheckCircle2 } from 'lucide-react';
 import { addToCart } from '@/app/product/[slug]/actions';
 import { toast } from 'sonner';
+import { useChannel } from '@/providers/channel-provider';
+import { formatPrice } from '@/lib/format';
 
 interface ProductInfoProps {
     product: {
@@ -46,14 +48,8 @@ interface ProductInfoProps {
     searchParams: { [key: string]: string | string[] | undefined };
 }
 
-function formatPrice(price: number) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    }).format(price / 100);
-}
-
 export function ProductInfo({ product, searchParams }: ProductInfoProps) {
+    const { currencyCode } = useChannel();
     const pathname = usePathname();
     const router = useRouter();
     const currentSearchParams = useSearchParams();
@@ -148,7 +144,7 @@ export function ProductInfo({ product, searchParams }: ProductInfoProps) {
                 <h1 className="text-3xl font-bold">{product.name}</h1>
                 {selectedVariant && (
                     <p className="text-2xl font-bold mt-2">
-                        {formatPrice(selectedVariant.priceWithTax)}
+                        {formatPrice(selectedVariant.priceWithTax, currencyCode)}
                     </p>
                 )}
             </div>

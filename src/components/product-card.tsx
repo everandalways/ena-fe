@@ -1,5 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { formatPrice } from '@/lib/format';
+import { useChannel } from '@/providers/channel-provider';
 
 interface ProductCardProps {
     product: {
@@ -15,18 +19,11 @@ interface ProductCardProps {
             max?: number;
             value?: number;
         };
-        currencyCode: string;
     };
 }
 
-function formatPrice(price: number, currencyCode: string) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currencyCode,
-    }).format(price / 100);
-}
-
 export function ProductCard({ product }: ProductCardProps) {
+    const { currencyCode } = useChannel();
     const price = product.priceWithTax.value || product.priceWithTax.min || 0;
     const hasRange = product.priceWithTax.min !== undefined &&
                      product.priceWithTax.max !== undefined &&
@@ -59,10 +56,10 @@ export function ProductCard({ product }: ProductCardProps) {
                 <p className="text-lg font-bold">
                     {hasRange ? (
                         <>
-                            {formatPrice(product.priceWithTax.min!, product.currencyCode)} - {formatPrice(product.priceWithTax.max!, product.currencyCode)}
+                            {formatPrice(product.priceWithTax.min!, currencyCode)} - {formatPrice(product.priceWithTax.max!, currencyCode)}
                         </>
                     ) : (
-                        formatPrice(price, product.currencyCode)
+                        formatPrice(price, currencyCode)
                     )}
                 </p>
             </div>
