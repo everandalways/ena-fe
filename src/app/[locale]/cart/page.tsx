@@ -3,7 +3,7 @@ import { GetActiveOrderQuery } from '@/lib/vendure/queries';
 import { RemoveFromCartMutation, AdjustCartItemMutation, ApplyPromotionCodeMutation, RemovePromotionCodeMutation } from '@/lib/vendure/mutations';
 import Image from 'next/image';
 import Link from 'next/link';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,13 +13,13 @@ import { formatPrice } from '@/lib/format';
 async function removeFromCart(lineId: string) {
   'use server';
   await mutate(RemoveFromCartMutation, { lineId }, { useAuthToken: true });
-  revalidateTag('cart');
+  updateTag('cart');
 }
 
 async function adjustQuantity(lineId: string, quantity: number) {
   'use server';
   await mutate(AdjustCartItemMutation, { lineId, quantity }, { useAuthToken: true });
-  revalidateTag('cart');
+  updateTag('cart');
 }
 
 async function applyPromotionCode(formData: FormData) {
@@ -29,7 +29,7 @@ async function applyPromotionCode(formData: FormData) {
 
   const res = await mutate(ApplyPromotionCodeMutation, { couponCode: code }, { useAuthToken: true });
   console.log({res: res.data.applyCouponCode})
-  revalidateTag('cart');
+  updateTag('cart');
 }
 
 async function removePromotionCode(formData: FormData) {
@@ -39,7 +39,7 @@ async function removePromotionCode(formData: FormData) {
 
   const res = await mutate(RemovePromotionCodeMutation, { couponCode: code }, { useAuthToken: true });
   console.log({removeRes: res.data.removeCouponCode});
-  revalidateTag('cart');
+  updateTag('cart');
 }
 
 export default async function CartPage() {

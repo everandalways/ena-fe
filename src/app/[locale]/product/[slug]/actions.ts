@@ -2,7 +2,7 @@
 
 import { mutate } from '@/lib/vendure/api';
 import { AddToCartMutation } from '@/lib/vendure/mutations';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { setAuthToken, getAuthToken } from '@/lib/auth';
 
 export async function addToCart(variantId: string, quantity: number = 1) {
@@ -17,7 +17,7 @@ export async function addToCart(variantId: string, quantity: number = 1) {
 
     if (result.data.addItemToOrder.__typename === 'Order') {
       // Revalidate cart data across all pages
-      revalidateTag('cart');
+      updateTag('cart');
       return { success: true, order: result.data.addItemToOrder };
     } else {
       return { success: false, error: result.data.addItemToOrder.message };
