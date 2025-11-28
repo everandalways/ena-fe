@@ -1,17 +1,58 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { requestPasswordResetAction } from './actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
 import Link from 'next/link';
 
-export function ForgotPasswordForm() {
-    const [state, formAction, isPending] = useActionState(requestPasswordResetAction, undefined);
+const forgotPasswordSchema = z.object({
+    emailAddress: z.email('Please enter a valid email address'),
+});
 
-    if (state?.success) {
+type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+
+export function ForgotPasswordForm() {
+    const [isPending, startTransition] = useTransition();
+    const [serverError, setServerError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+
+    const form = useForm<ForgotPasswordFormData>({
+        resolver: zodResolver(forgotPasswordSchema),
+        defaultValues: {
+            emailAddress: '',
+        },
+    });
+
+    const onSubmit = (data: ForgotPasswordFormData) => {
+        setServerError(null);
+
+        startTransition(async () => {
+            const formData = new FormData();
+            formData.append('emailAddress', data.emailAddress);
+
+            const result = await requestPasswordResetAction(undefined, formData);
+            if (result?.error) {
+                setServerError(result.error);
+            } else if (result?.success) {
+                setSuccess(true);
+            }
+        });
+    };
+
+    if (success) {
         return (
             <Card>
                 <CardHeader>
@@ -39,37 +80,47 @@ export function ForgotPasswordForm() {
                     Enter your email address and we&apos;ll send you a link to reset your password.
                 </CardDescription>
             </CardHeader>
-            <form action={formAction}>
-                <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="emailAddress">Email</Label>
-                        <Input
-                            id="emailAddress"
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <CardContent>
+                        <FormField
+                            control={form.control}
                             name="emailAddress"
-                            type="email"
-                            placeholder="you@example.com"
-                            required
-                            disabled={isPending}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="email"
+                                            placeholder="you@example.com"
+                                            disabled={isPending}
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                    </div>
-                    {state?.error && (
-                        <div className="text-sm text-destructive">
-                            {state.error}
-                        </div>
-                    )}
-                </CardContent>
-                <CardFooter className="flex flex-col space-y-4">
-                    <Button type="submit" className="w-full" disabled={isPending}>
-                        {isPending ? 'Sending...' : 'Send reset link'}
-                    </Button>
-                    <Link
-                        href="/sign-in"
-                        className="text-sm text-center text-muted-foreground hover:text-primary"
-                    >
-                        Back to Sign In
-                    </Link>
-                </CardFooter>
-            </form>
+
+                        {serverError && (
+                            <div className="text-sm text-destructive mt-4">
+                                {serverError}
+                            </div>
+                        )}
+                    </CardContent>
+                    <CardFooter className="flex flex-col space-y-4 mt-4">
+                        <Button type="submit" className="w-full" disabled={isPending}>
+                            {isPending ? 'Sending...' : 'Send reset link'}
+                        </Button>
+                        <Link
+                            href="/sign-in"
+                            className="text-sm text-center text-muted-foreground hover:text-primary"
+                        >
+                            Back to Sign In
+                        </Link>
+                    </CardFooter>
+                </form>
+            </Form>
         </Card>
     );
 }
