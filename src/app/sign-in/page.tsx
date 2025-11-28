@@ -1,4 +1,10 @@
+import type {Metadata} from 'next';
 import { LoginForm } from "./login-form";
+
+export const metadata: Metadata = {
+    title: 'Sign In',
+    description: 'Sign in to your account to access your orders, wishlist, and more.',
+};
 
 export default function SignInPage() {
     return (

@@ -1,11 +1,18 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { query } from '@/lib/vendure/api';
-import { SearchProductsQuery } from '@/lib/vendure/queries';
+import { SearchProductsQuery, GetCollectionProductsQuery } from '@/lib/vendure/queries';
 import { ProductGrid } from '@/components/product-grid';
 import { FacetFilters } from '@/components/facet-filters';
 import { ProductGridSkeleton } from '@/components/product-grid-skeleton';
 import { buildSearchInput, getCurrentPage } from '@/lib/search-helpers';
 import { cacheLife, cacheTag } from 'next/cache';
+import {
+    SITE_NAME,
+    truncateDescription,
+    buildCanonicalUrl,
+    buildOgImages,
+} from '@/lib/metadata';
 
 interface CollectionPageProps {
     params: Promise<{ slug: string }>;
@@ -23,6 +30,58 @@ async function getCollectionProducts(slug: string, searchParams: { [key: string]
             collectionSlug: slug
         })
     });
+}
+
+async function getCollectionMetadata(slug: string) {
+    'use cache';
+    cacheLife('hours');
+    cacheTag(`collection-meta-${slug}`);
+
+    return query(GetCollectionProductsQuery, {
+        slug,
+        input: { take: 0, collectionSlug: slug, groupByProduct: true },
+    });
+}
+
+export async function generateMetadata({
+    params,
+}: CollectionPageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const result = await getCollectionMetadata(slug);
+    const collection = result.data.collection;
+
+    if (!collection) {
+        return {
+            title: 'Collection Not Found',
+        };
+    }
+
+    const description =
+        truncateDescription(collection.description) ||
+        `Browse our ${collection.name} collection at ${SITE_NAME}`;
+
+    return {
+        title: collection.name,
+        description,
+        alternates: {
+            canonical: buildCanonicalUrl(`/collection/${collection.slug}`),
+        },
+        openGraph: {
+            title: collection.name,
+            description,
+            type: 'website',
+            url: buildCanonicalUrl(`/collection/${collection.slug}`),
+            images: buildOgImages(collection.featuredAsset?.preview, collection.name),
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: collection.name,
+            description,
+            images: collection.featuredAsset?.preview
+                ? [collection.featuredAsset.preview]
+                : undefined,
+        },
+    };
 }
 
 export default async function CollectionPage({ params, searchParams }: CollectionPageProps) {

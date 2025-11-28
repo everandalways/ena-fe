@@ -1,7 +1,11 @@
+import type {Metadata} from 'next';
 import {query} from '@/lib/vendure/api';
+
+export const metadata: Metadata = {
+    title: 'My Orders',
+};
 import {GetCustomerOrdersQuery} from '@/lib/vendure/queries';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table';
-import {Badge} from '@/components/ui/badge';
 import {
     Pagination,
     PaginationContent,
@@ -14,36 +18,12 @@ import {
 import {ArrowRightIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Price} from '@/components/price';
+import {OrderStatusBadge} from '@/components/order-status-badge';
+import {formatDate} from '@/lib/format';
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
 const ITEMS_PER_PAGE = 10;
-
-function formatDate(dateString: string) {
-    return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    });
-}
-
-function formatPrice(price: number, currencyCode: string) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currencyCode,
-    }).format(price / 100);
-}
-
-function getStatusColor(state: string) {
-    const stateColors: Record<string, string> = {
-        PaymentSettled: 'bg-green-100 text-green-800',
-        Delivered: 'bg-blue-100 text-blue-800',
-        Shipped: 'bg-purple-100 text-purple-800',
-        Cancelled: 'bg-red-100 text-red-800',
-        Draft: 'bg-gray-100 text-gray-800',
-    };
-    return stateColors[state] || 'bg-gray-100 text-gray-800';
-}
 
 export default async function OrdersPage(props: {
     params: Promise<{ locale: string }>,
@@ -115,12 +95,7 @@ export default async function OrdersPage(props: {
                                             {formatDate(order.createdAt)}
                                         </TableCell>
                                         <TableCell>
-                                            <Badge
-                                                className={getStatusColor(order.state)}
-                                                variant="secondary"
-                                            >
-                                                {order.state}
-                                            </Badge>
+                                            <OrderStatusBadge state={order.state}/>
                                         </TableCell>
                                         <TableCell>
                                             {order.lines.length}{' '}

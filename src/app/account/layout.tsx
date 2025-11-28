@@ -1,5 +1,11 @@
+import type {Metadata} from 'next';
 import Link from 'next/link';
 import {Package, User, MapPin} from 'lucide-react';
+import {noIndexRobots} from '@/lib/metadata';
+
+export const metadata: Metadata = {
+    robots: noIndexRobots(),
+};
 
 const navItems = [
     {href: '/account/orders', label: 'Orders', icon: Package},

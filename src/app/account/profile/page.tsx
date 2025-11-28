@@ -1,4 +1,9 @@
+import type {Metadata} from 'next';
 import { getActiveCustomer } from '@/lib/vendure/actions';
+
+export const metadata: Metadata = {
+    title: 'Profile',
+};
 import { ChangePasswordForm } from './change-password-form';
 import { EditProfileForm } from './edit-profile-form';
 import { EditEmailForm } from './edit-email-form';

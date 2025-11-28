@@ -1,5 +1,13 @@
+import type {Metadata} from 'next';
 import {Suspense} from 'react';
 import {OrderConfirmation} from './order-confirmation';
+import {noIndexRobots} from '@/lib/metadata';
+
+export const metadata: Metadata = {
+    title: 'Order Confirmation',
+    description: 'Your order has been placed successfully.',
+    robots: noIndexRobots(),
+};
 
 export default async function OrderConfirmationPage(props: PageProps<'/order-confirmation/[code]'>) {
     return (

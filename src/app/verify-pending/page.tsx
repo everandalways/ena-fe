@@ -1,7 +1,13 @@
+import type {Metadata} from 'next';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
+
+export const metadata: Metadata = {
+    title: 'Verification Pending',
+    description: 'Check your email to verify your account.',
+};
 
 export default function VerifyPendingPage() {
     return (

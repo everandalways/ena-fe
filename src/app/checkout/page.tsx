@@ -1,3 +1,4 @@
+import type {Metadata} from 'next';
 import {query} from '@/lib/vendure/api';
 import {
     GetActiveOrderForCheckoutQuery,
@@ -9,6 +10,13 @@ import {
 import {redirect} from 'next/navigation';
 import CheckoutFlow from './checkout-flow';
 import {CheckoutProvider} from './checkout-provider';
+import {noIndexRobots} from '@/lib/metadata';
+
+export const metadata: Metadata = {
+    title: 'Checkout',
+    description: 'Complete your purchase.',
+    robots: noIndexRobots(),
+};
 
 export default async function CheckoutPage() {
     const [orderRes, addressesRes, countriesRes, shippingMethodsRes, paymentMethodsRes] =

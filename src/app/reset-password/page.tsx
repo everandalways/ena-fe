@@ -1,6 +1,12 @@
+import type {Metadata} from 'next';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 import { ResetPasswordForm } from './reset-password-form';
+
+export const metadata: Metadata = {
+    title: 'Reset Password',
+    description: 'Create a new password for your account.',
+};
 
 interface ResetPasswordPageProps {
     searchParams: Promise<{ token?: string }>;

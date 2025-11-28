@@ -1,4 +1,10 @@
+import type {Metadata} from 'next';
 import { RegistrationForm } from "./registration-form";
+
+export const metadata: Metadata = {
+    title: 'Create Account',
+    description: 'Create a new account to start shopping with us.',
+};
 
 export default function RegisterPage() {
     return (

@@ -1,4 +1,9 @@
+import type {Metadata} from 'next';
 import { query } from '@/lib/vendure/api';
+
+export const metadata: Metadata = {
+    title: 'Addresses',
+};
 import { GetCustomerAddressesQuery, GetAvailableCountriesQuery } from '@/lib/vendure/queries';
 import { AddressesClient } from './addresses-client';
 

@@ -1,3 +1,4 @@
+import type {Metadata} from 'next';
 import {ChevronLeft} from 'lucide-react';
 import {query} from '@/lib/vendure/api';
 import {GetOrderDetailQuery} from '@/lib/vendure/queries';
@@ -9,32 +10,17 @@ import Image from 'next/image';
 import {getActiveCustomer} from "@/lib/vendure/actions";
 import {notFound, redirect} from "next/navigation";
 import {Price} from '@/components/price';
+import {OrderStatusBadge} from '@/components/order-status-badge';
+import {formatDate} from '@/lib/format';
 import Link from "next/link";
 
-function formatDate(dateString: string) {
-    return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-}
+type OrderDetailPageProps = PageProps<'/account/orders/[code]'>;
 
-function formatPrice(price: number, currencyCode: string) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currencyCode,
-    }).format(price / 100);
-}
-
-function getStatusColor(state: string) {
-    const stateColors: Record<string, string> = {
-        PaymentSettled: 'bg-green-100 text-green-800',
-        Delivered: 'bg-blue-100 text-blue-800',
-        Shipped: 'bg-purple-100 text-purple-800',
-        Cancelled: 'bg-red-100 text-red-800',
-        Draft: 'bg-gray-100 text-gray-800',
+export async function generateMetadata({params}: OrderDetailPageProps): Promise<Metadata> {
+    const {code} = await params;
+    return {
+        title: `Order ${code}`,
     };
-    return stateColors[state] || 'bg-gray-100 text-gray-800';
 }
 
 export default async function OrderDetailPage(props: PageProps<'/account/orders/[code]'>) {
@@ -71,12 +57,10 @@ export default async function OrderDetailPage(props: PageProps<'/account/orders/
                     <div>
                         <h1 className="text-3xl font-bold">Order {order.code}</h1>
                         <p className="text-muted-foreground mt-1">
-                            Placed on {formatDate(order.createdAt)}
+                            Placed on {formatDate(order.createdAt, 'long')}
                         </p>
                     </div>
-                    <Badge className={getStatusColor(order.state)} variant="secondary">
-                        {order.state}
-                    </Badge>
+                    <OrderStatusBadge state={order.state}/>
                 </div>
             </div>
 
