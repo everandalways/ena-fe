@@ -1,4 +1,5 @@
-import {getTopCollections} from '@/lib/collections';
+import {cacheLife} from 'next/cache';
+import {getTopCollections} from '@/lib/vendure/cached';
 import {
     NavigationMenu,
     NavigationMenuList,
@@ -8,6 +9,7 @@ import {NavbarLink} from '@/components/navbar/navbar-link';
 
 export async function NavbarCollections() {
     "use cache";
+    cacheLife('days');
 
     const collections = await getTopCollections();
 

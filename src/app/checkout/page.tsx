@@ -2,7 +2,6 @@ import type {Metadata} from 'next';
 import {query} from '@/lib/vendure/api';
 import {
     GetActiveOrderForCheckoutQuery,
-    GetAvailableCountriesQuery,
     GetCustomerAddressesQuery,
     GetEligiblePaymentMethodsQuery,
     GetEligibleShippingMethodsQuery,
@@ -12,6 +11,7 @@ import CheckoutFlow from './checkout-flow';
 import {CheckoutProvider} from './checkout-provider';
 import {noIndexRobots} from '@/lib/metadata';
 import {getActiveCustomer} from '@/lib/vendure/actions';
+import {getAvailableCountriesCached} from '@/lib/vendure/cached';
 
 export const metadata: Metadata = {
     title: 'Checkout',
@@ -26,11 +26,11 @@ export default async function CheckoutPage(_props: PageProps<'/checkout'>) {
         redirect('/sign-in?redirectTo=/checkout');
     }
 
-    const [orderRes, addressesRes, countriesRes, shippingMethodsRes, paymentMethodsRes] =
+    const [orderRes, addressesRes, countries, shippingMethodsRes, paymentMethodsRes] =
         await Promise.all([
             query(GetActiveOrderForCheckoutQuery, {}, {useAuthToken: true}),
             query(GetCustomerAddressesQuery, {}, {useAuthToken: true}),
-            query(GetAvailableCountriesQuery, {}, {useAuthToken: true}),
+            getAvailableCountriesCached(),
             query(GetEligibleShippingMethodsQuery, {}, {useAuthToken: true}),
             query(GetEligiblePaymentMethodsQuery, {}, {useAuthToken: true}),
         ]);
@@ -48,7 +48,6 @@ export default async function CheckoutPage(_props: PageProps<'/checkout'>) {
     }
 
     const addresses = addressesRes.data.activeCustomer?.addresses || [];
-    const countries = countriesRes.data.availableCountries || [];
     const shippingMethods = shippingMethodsRes.data.eligibleShippingMethods || [];
     const paymentMethods =
         paymentMethodsRes.data.eligiblePaymentMethods?.filter((m) => m.isEligible) || [];
