@@ -2,9 +2,6 @@ import {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
     cacheComponents: true,
-    turbopack: {
-        root: process.cwd()
-    },
     images: {
         remotePatterns: [
             {
@@ -12,6 +9,9 @@ const nextConfig: NextConfig = {
             },
             {
                 hostname: 'demo.vendure.io'
+            },
+            {
+                hostname: 'localhost'
             }
         ],
     }
