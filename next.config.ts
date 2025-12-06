@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
                 hostname: 'localhost'
             }
         ],
+    },
+    experimental: {
+        rootParams: true
     }
 };
 
