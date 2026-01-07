@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": " next dev --port 3001",
+    "dev": " next dev --port 3002",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -47,7 +47,7 @@
     "lucide-react": "^0.544.0",
     "next": "^16.0.10",
     "next-themes": "^0.4.6",
-    "react": " ^19.2.0",
+    "react": "^19.2.0",
     "react-day-picker": "^9.11.3",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.68.0",
