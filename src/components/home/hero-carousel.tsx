@@ -97,7 +97,7 @@ export function HeroCarousel() {
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.7 }}
-                className="max-w-2xl space-y-6 sm:space-y-8"
+                className="max-w-2xl space-y-6 sm:space-y-8 w-full"
               >
                 {/* Decorative line */}
                 <motion.div
@@ -139,18 +139,15 @@ export function HeroCarousel() {
                   initial={{ y: 15, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5 }}
-                  className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-4 sm:pt-6"
+                  className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-4 sm:pt-6 w-full sm:w-auto"
                 >
-                  <Button className="btn-luxury text-[hsl(var(--secondary))] hover:text-[hsl(var(--background))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal tracking-wide ">
+                  <button className="btn-luxury text-[hsl(var(--secondary))] hover:text-[hsl(var(--background))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal tracking-wide w-full sm:w-auto flex items-center justify-center">
                     <Calendar className="w-4 h-4 mr-2" />
                     View Collection
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="bg-[hsl(var(--card))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] transition-all duration-500 tracking-wide"
-                  >
+                  </button>
+                  <button className="bg-[hsl(var(--card))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal border border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] transition-all duration-500 tracking-wide w-full sm:w-auto rounded-lg">
                     Book Consultation
-                  </Button>
+                  </button>
                 </motion.div>
               </motion.div>
             </div>
@@ -185,24 +182,22 @@ export function HeroCarousel() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute inset-0 pointer-events-none flex items-center justify-between px-4 sm:px-8 lg:px-12"
+        className="absolute inset-0 pointer-events-none flex items-center justify-between px-4 sm:px-8 lg:px-12 z-20"
       >
-        <Button
-          variant="ghost"
-          size="sm"
+        <button
+          type="button"
           onClick={prevSlide}
-          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group"
+          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group z-30"
         >
           <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(var(--primary))] group-hover:text-[hsl(var(--secondary))]" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
+        </button>
+        <button
+          type="button"
           onClick={nextSlide}
-          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group"
+          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group z-30"
         >
           <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(var(--primary))] group-hover:text-[hsl(var(--secondary))]" />
-        </Button>
+        </button>
       </motion.div>
 
       {/* Slide Indicators */}
@@ -210,7 +205,7 @@ export function HeroCarousel() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-6 sm:bottom-10 left-[47%] transform -translate-x-1/2 flex space-x-3 sm:space-x-4"
+        className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-3 sm:space-x-4"
       >
         {slides.map((_, index) => (
           <motion.button
