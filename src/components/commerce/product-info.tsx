@@ -136,39 +136,56 @@ export function ProductInfo({ product, searchParams }: ProductInfoProps) {
     const canAddToCart = selectedVariant && isInStock;
 
     return (
-        <div className="space-y-6">
-            {/* Product Title */}
-            <div>
-                <h1 className="text-3xl font-bold">{product.name}</h1>
+        <div className="space-y-8">
+            {/* Product Title & Price */}
+            <div className="space-y-3 pb-4 border-b border-[hsl(var(--lead-text))]/20">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-foreground leading-tight">
+                    {product.name}
+                </h1>
                 {selectedVariant && (
-                    <p className="text-2xl font-bold mt-2">
-                        <Price value={selectedVariant.priceWithTax} />
-                    </p>
+                    <div className="flex items-baseline gap-3">
+                        <p className="text-3xl sm:text-4xl font-bold text-foreground">
+                            <Price value={selectedVariant.priceWithTax} />
+                        </p>
+                    </div>
                 )}
             </div>
 
             {/* Product Description */}
-            <div className="prose prose-sm max-w-none">
+            <div className="prose prose-sm sm:prose-base max-w-none text-muted-foreground leading-relaxed">
                 <div dangerouslySetInnerHTML={{ __html: product.description }} />
             </div>
 
             {/* Option Groups */}
             {product.optionGroups.length > 0 && (
-                <div className="space-y-4">
-                    {product.optionGroups.map((group) => (
-                        <div key={group.id} className="space-y-3">
-                            <Label className="text-base font-semibold">
-                                {group.name}
-                            </Label>
+                <div className="space-y-8 pt-4 bg-gradient-to-br from-card to-card/50 rounded-2xl p-6 sm:p-8 border border-[hsl(var(--lead-text))]/15 shadow-sm relative overflow-hidden">
+                    {/* Subtle gold accent on top border */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[hsl(var(--lead-text))]/30 to-transparent" />
+                    {product.optionGroups.map((group, groupIndex) => (
+                        <div 
+                            key={group.id} 
+                            className="space-y-4 pb-6 border-b border-border/30 last:border-b-0 last:pb-0"
+                        >
+                            <div className="flex items-center gap-2">
+                                <Label className="text-lg font-semibold text-foreground font-serif">
+                                    {group.name}
+                                </Label>
+                                {selectedOptions[group.id] && (
+                                    <span className="text-xs text-muted-foreground font-medium">
+                                        (Required)
+                                    </span>
+                                )}
+                            </div>
                             <RadioGroup
                                 value={selectedOptions[group.id] || ''}
                                 onValueChange={(value) => handleOptionChange(group.id, value)}
+                                className="mt-2"
                             >
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                                     {group.options.map((option) => {
                                         const isSelected = selectedOptions[group.id] === option.id;
                                         return (
-                                            <div key={option.id}>
+                                            <div key={option.id} className="relative">
                                                 <RadioGroupItem
                                                     value={option.id}
                                                     id={option.id}
@@ -176,13 +193,29 @@ export function ProductInfo({ product, searchParams }: ProductInfoProps) {
                                                 />
                                                 <Label
                                                     htmlFor={option.id}
-                                                    className={`flex items-center justify-center rounded-md border-2 px-4 py-3 cursor-pointer transition-colors ${
-                                                        isSelected
-                                                            ? 'border-primary bg-primary-selected text-primary font-semibold'
-                                                            : 'border-muted bg-popover hover:bg-accent hover:text-accent-foreground'
-                                                    }`}
+                                                    className={`
+                                                        group relative flex items-center justify-center rounded-xl 
+                                                        border-2 px-5 sm:px-6 py-3.5 sm:py-4 cursor-pointer 
+                                                        transition-all duration-300 min-h-[52px] font-medium 
+                                                        text-sm sm:text-base backdrop-blur-sm
+                                                        ${
+                                                            isSelected
+                                                                ? 'border-[hsl(var(--lead-text))]/40 bg-gradient-to-br from-primary/20 via-primary/15 to-primary/10 text-primary shadow-lg shadow-primary/10 scale-[1.02] ring-2 ring-[hsl(var(--lead-text))]/20 font-semibold relative'
+                                                                : 'border-border/60 bg-background/80 hover:border-[hsl(var(--lead-text))]/30 hover:bg-gradient-to-br hover:from-accent/40 hover:to-accent/20 hover:text-accent-foreground hover:shadow-md hover:scale-[1.01] active:scale-[0.99]'
+                                                        }
+                                                    `}
                                                 >
-                                                    {option.name}
+                                                    <span className="relative z-10 text-center leading-tight">
+                                                        {option.name}
+                                                    </span>
+                                                    {isSelected && (
+                                                        <>
+                                                            {/* Gold accent border on selected */}
+                                                            <div className="absolute inset-0 rounded-xl border border-[hsl(var(--lead-text))]/30 pointer-events-none" />
+                                                            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[hsl(var(--lead-text))] shadow-sm animate-pulse" />
+                                                            <div className="absolute inset-0 rounded-xl bg-primary/5 pointer-events-none" />
+                                                        </>
+                                                    )}
                                                 </Label>
                                             </div>
                                         );
@@ -194,22 +227,21 @@ export function ProductInfo({ product, searchParams }: ProductInfoProps) {
                 </div>
             )}
 
-            {/* Stock Status */}
-            {selectedVariant && (
-                <div className="text-sm">
-                    {isInStock ? (
-                        <span className="text-green-600 font-medium">In Stock</span>
-                    ) : (
-                        <span className="text-destructive font-medium">Out of Stock</span>
-                    )}
-                </div>
-            )}
+            {/* Stock Status & Add to Cart */}
+            <div className="space-y-4 pt-2 border-t border-[hsl(var(--lead-text))]/20">
+                {selectedVariant && (
+                    <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${isInStock ? 'bg-green-500' : 'bg-destructive'}`} />
+                        <span className={`text-sm font-medium ${isInStock ? 'text-green-600 dark:text-green-500' : 'text-destructive'}`}>
+                            {isInStock ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                    </div>
+                )}
 
-            {/* Add to Cart Button */}
-            <div className="pt-4">
+                {/* Add to Cart Button */}
                 <Button
                     size="lg"
-                    className="w-full"
+                    className="w-full h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                     disabled={!canAddToCart || isPending}
                     onClick={handleAddToCart}
                 >
@@ -231,14 +263,14 @@ export function ProductInfo({ product, searchParams }: ProductInfoProps) {
                         </>
                     )}
                 </Button>
-            </div>
 
-            {/* SKU */}
-            {selectedVariant && (
-                <div className="text-xs text-muted-foreground">
-                    SKU: {selectedVariant.sku}
-                </div>
-            )}
+                {/* SKU */}
+                {selectedVariant && (
+                    <div className="text-xs text-muted-foreground text-center pt-2">
+                        SKU: <span className="font-mono font-medium">{selectedVariant.sku}</span>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

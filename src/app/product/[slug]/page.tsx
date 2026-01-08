@@ -65,7 +65,7 @@ export async function generateMetadata({
     };
 }
 
-export default async function ProductDetailPage({params, searchParams}: PageProps<'/product/[slug]'>) {
+export default async function ProductDetailPage({ params, searchParams }: PageProps<'/product/[slug]'>) {
     const { slug } = await params;
     const searchParamsResolved = await searchParams;
 
@@ -82,15 +82,15 @@ export default async function ProductDetailPage({params, searchParams}: PageProp
 
     return (
         <>
-            <div className="container mx-auto px-4 py-8 mt-16">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mt-16">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20">
                     {/* Left Column: Image Carousel */}
-                    <div className="lg:sticky lg:top-20 lg:self-start">
+                    <div className="lg:sticky lg:top-24 lg:self-start">
                         <ProductImageCarousel images={product.assets} />
                     </div>
 
                     {/* Right Column: Product Info */}
-                    <div>
+                    <div className="lg:pl-4">
                         <ProductInfo product={product} searchParams={searchParamsResolved} />
                     </div>
                 </div>
