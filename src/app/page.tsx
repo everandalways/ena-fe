@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { HeroCarousel } from "@/components/home/hero-carousel";
 import { DiamondSelector } from "@/components/home/diamond-selector";
-import { FilterSection } from "@/components/home/filter-section";
+import { FilterSectionWrapper } from "@/components/home/filter-section-wrapper";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { SITE_NAME, SITE_URL, buildCanonicalUrl } from "@/lib/metadata";
@@ -33,7 +34,9 @@ export default async function Home(_props: PageProps<'/'>) {
             </AnimatedSection>
 
             <AnimatedSection delay={0.3}>
-                <FilterSection facetValues={undefined} />
+                <Suspense fallback={<div className="h-96 animate-pulse bg-muted rounded-lg" />}>
+                    <FilterSectionWrapper />
+                </Suspense>
             </AnimatedSection>
 
             <AnimatedSection delay={0.4}>

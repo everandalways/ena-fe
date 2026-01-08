@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
             },
             {
                 hostname: 'localhost'
+            },
+            {
+                hostname: 'images.unsplash.com'
             }
         ],
     },

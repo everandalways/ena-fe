@@ -64,7 +64,7 @@ export default function RootLayout({children}: LayoutProps<'/'>) {
             >
                 <ThemeProvider>
                     <Navbar />
-                    <main className="pt-16">
+                    <main>
                         {children}
                     </main>
                     <Footer />
