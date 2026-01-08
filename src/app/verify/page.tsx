@@ -29,7 +29,7 @@ function VerifyLoading() {
 
 export default function VerifyPage({searchParams}: PageProps<'/verify'>) {
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
+        <div className="flex items-center justify-center px-4 py-12 min-h-[60vh]">
             <div className="w-full max-w-md space-y-6">
                 <Suspense fallback={<VerifyLoading/>}>
                     <VerifyContent searchParams={searchParams}/>

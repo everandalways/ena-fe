@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function OrderConfirmationPage(props: PageProps<'/order-confirmation/[code]'>) {
     return (
-        <Suspense fallback={<div className="container mx-auto px-4 py-16 text-center">Loading...</div>}>
+        <Suspense fallback={<div className="container mx-auto px-4 py-8 sm:py-12 text-center">Loading...</div>}>
             <OrderConfirmation {...props} />
         </Suspense>
     );

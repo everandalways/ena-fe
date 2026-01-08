@@ -66,7 +66,7 @@ export async function OrderConfirmation({params}: PageProps<'/order-confirmation
     }
 
     return (
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-8 sm:py-12">
             <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-8">
                     <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4"/>

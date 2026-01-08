@@ -82,7 +82,7 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
 
     return (
         <>
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mt-16">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20">
                     {/* Left Column: Image Carousel */}
                     <div className="lg:sticky lg:top-24 lg:self-start">
