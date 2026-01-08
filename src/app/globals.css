@@ -359,6 +359,10 @@
     border-color: hsl(var(--primary) / 0.5);
   }
 
+  .bg-primary-selected {
+    background-color: hsl(var(--primary) / 0.25);
+  }
+
   /* Fade-in animation for diamond selector */
   @keyframes fade-in {
     from {
