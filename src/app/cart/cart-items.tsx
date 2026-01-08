@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {Minus, Plus, X} from 'lucide-react';
 import {Price} from '@/components/commerce/price';
 import {removeFromCart, adjustQuantity} from './actions';
+import {CartItemImage} from '@/components/commerce/cart-item-image';
 
 type ActiveOrder = {
     id: string;
@@ -52,20 +52,11 @@ export async function CartItems({activeOrder}: { activeOrder: ActiveOrder | null
                     key={line.id}
                     className="flex flex-col sm:flex-row gap-4 p-4 border rounded-lg bg-card"
                 >
-                    {line.productVariant.product.featuredAsset && (
-                        <Link
-                            href={`/src/app/%5Blocale%5D/product/${line.productVariant.product.slug}`}
-                            className="flex-shrink-0"
-                        >
-                            <Image
-                                src={line.productVariant.product.featuredAsset.preview}
-                                alt={line.productVariant.name}
-                                width={120}
-                                height={120}
-                                className="rounded-md object-cover w-full sm:w-[120px] h-[120px]"
-                            />
-                        </Link>
-                    )}
+                    <CartItemImage
+                        imageUrl={line.productVariant.product.featuredAsset?.preview}
+                        alt={line.productVariant.name}
+                        productSlug={line.productVariant.product.slug}
+                    />
 
                     <div className="flex-grow min-w-0">
                         <Link

@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
             },
             {
                 hostname: 'images.unsplash.com'
+            },
+            {
+                hostname: 'www.my-shop.com'
+            },
+            {
+                hostname: 'my-shop.com'
             }
         ],
     },
