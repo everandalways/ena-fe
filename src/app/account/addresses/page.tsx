@@ -6,15 +6,24 @@ export const metadata: Metadata = {
 };
 import { GetCustomerAddressesQuery, GetAvailableCountriesQuery } from '@/lib/vendure/queries';
 import { AddressesClient } from './addresses-client';
+import { getActiveCustomer } from '@/lib/vendure/actions';
+import { redirect } from 'next/navigation';
 
 export default async function AddressesPage(_props: PageProps<'/account/addresses'>) {
-    const [addressesResult, countriesResult] = await Promise.all([
-        query(GetCustomerAddressesQuery, {}, { useAuthToken: true }),
-        query(GetAvailableCountriesQuery, {}),
-    ]);
+    try {
+        // First check if customer is authenticated
+        const customer = await getActiveCustomer();
+        if (!customer) {
+            redirect('/sign-in');
+        }
 
-    const addresses = addressesResult.data.activeCustomer?.addresses || [];
-    const countries = countriesResult.data.availableCountries || [];
+        const [addressesResult, countriesResult] = await Promise.all([
+            query(GetCustomerAddressesQuery, {}, { useAuthToken: true }),
+            query(GetAvailableCountriesQuery, {}),
+        ]);
+
+        const addresses = addressesResult.data.activeCustomer?.addresses || [];
+        const countries = countriesResult.data.availableCountries || [];
 
     return (
         <div className="space-y-6">
@@ -27,5 +36,9 @@ export default async function AddressesPage(_props: PageProps<'/account/addresse
 
             <AddressesClient addresses={addresses} countries={countries} />
         </div>
-    );
+        );
+    } catch (error) {
+        console.error('Error loading addresses:', error);
+        redirect('/sign-in');
+    }
 }

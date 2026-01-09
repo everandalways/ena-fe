@@ -22,34 +22,42 @@ import {OrderStatusBadge} from '@/components/commerce/order-status-badge';
 import {formatDate} from '@/lib/format';
 import Link from "next/link";
 import {redirect} from "next/navigation";
+import {getActiveCustomer} from '@/lib/vendure/actions';
 
 const ITEMS_PER_PAGE = 10;
 
 export default async function OrdersPage(props: PageProps<'/account/orders'>) {
-    const searchParams = await props.searchParams;
-    const pageParam = searchParams.page;
-    const currentPage = parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || '1', 10);
-    const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+    try {
+        // First check if customer is authenticated
+        const customer = await getActiveCustomer();
+        if (!customer) {
+            redirect('/sign-in');
+        }
 
-    const {data} = await query(
-        GetCustomerOrdersQuery,
-        {
-            options: {
-                take: ITEMS_PER_PAGE,
-                skip,
-                filter: {
-                    state: {
-                        notEq: 'AddingItems',
+        const searchParams = await props.searchParams;
+        const pageParam = searchParams.page;
+        const currentPage = parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || '1', 10);
+        const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+
+        const {data} = await query(
+            GetCustomerOrdersQuery,
+            {
+                options: {
+                    take: ITEMS_PER_PAGE,
+                    skip,
+                    filter: {
+                        state: {
+                            notEq: 'AddingItems',
+                        },
                     },
                 },
             },
-        },
-        {useAuthToken: true}
-    );
+            {useAuthToken: true}
+        );
 
-    if (!data.activeCustomer) {
-        return redirect('/sign-in');
-    }
+        if (!data.activeCustomer) {
+            redirect('/sign-in');
+        }
 
     const orders = data.activeCustomer.orders.items;
     const totalItems = data.activeCustomer.orders.totalItems;
@@ -137,7 +145,7 @@ export default async function OrdersPage(props: PageProps<'/account/orders'>) {
                                                 return (
                                                     <PaginationItem key={page}>
                                                         <PaginationLink
-                                                            href={`/src/app/%5Blocale%5D/account/orders?page=${page}`}
+                                                            href={`/account/orders?page=${page}`}
                                                             isActive={page === currentPage}
                                                         >
                                                             {page}
@@ -179,5 +187,9 @@ export default async function OrdersPage(props: PageProps<'/account/orders'>) {
                 </>
             )}
         </div>
-    );
+        );
+    } catch (error) {
+        console.error('Error loading orders:', error);
+        redirect('/sign-in');
+    }
 }
