@@ -6,6 +6,7 @@ import {Navbar} from "@/components/layout/navbar";
 import {Footer} from "@/components/layout/footer";
 import {ThemeProvider} from "@/components/providers/theme-provider";
 import {SITE_NAME, SITE_URL} from "@/lib/metadata";
+import {generateOrganizationSchema, JsonLd} from "@/lib/seo/schema";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
         template: `%s | ${SITE_NAME}`,
     },
     description:
-        "Shop the best products at Vendure Store. Quality products, competitive prices, and fast delivery.",
+        "Ever and Always - America's most trusted source for affordable diamond jewelry. Transparent pricing, premium craftsmanship, and reliable sourcing. Shop engagement rings, wedding bands, and fine diamond jewelry online.",
     openGraph: {
         type: "website",
         siteName: SITE_NAME,
@@ -57,11 +58,18 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({children}: LayoutProps<'/'>) {
+    // Generate organization schema for all pages
+    const organizationSchema = generateOrganizationSchema({
+        url: SITE_URL,
+        description: "Ever and Always - America's most trusted source for affordable diamond jewelry. Transparent pricing, premium craftsmanship, and reliable sourcing.",
+    });
+
     return (
         <html lang="en" suppressHydrationWarning>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
             >
+                <JsonLd data={organizationSchema} />
                 <ThemeProvider>
                     <Navbar />
                     <main className="page-enter">

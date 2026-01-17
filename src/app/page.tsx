@@ -9,20 +9,32 @@ import { SITE_NAME, SITE_URL, buildCanonicalUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
     title: {
-        absolute: `${SITE_NAME} - Your One-Stop Shop`,
+        absolute: `${SITE_NAME} - Affordable Diamond Jewelry | Trusted & Reliable USA`,
     },
     description:
-        "Discover high-quality products at competitive prices. Shop now for the best deals on electronics, fashion, home goods, and more.",
+        "Ever and Always offers the most affordable diamond jewelry online. Transparent pricing, trusted sourcing, and premium craftsmanship. Shop engagement rings, wedding bands, and fine diamond jewelry with confidence. Free shipping & lifetime warranty.",
     alternates: {
         canonical: buildCanonicalUrl("/"),
     },
     openGraph: {
-        title: `${SITE_NAME} - Your One-Stop Shop`,
+        title: `${SITE_NAME} - Affordable Diamond Jewelry | Trusted & Reliable USA`,
         description:
-            "Discover high-quality products at competitive prices. Shop now for the best deals.",
+            "America's most cost-friendly diamond jewelry store. Transparent pricing, premium craftsmanship, and reliable sourcing. Shop engagement rings, wedding bands, and fine diamond jewelry online.",
         type: "website",
         url: SITE_URL,
     },
+    keywords: [
+        "affordable diamond rings",
+        "cheap engagement rings",
+        "diamond jewelry USA",
+        "affordable wedding rings",
+        "lab grown diamonds",
+        "natural diamonds",
+        "diamond rings online",
+        "best diamond prices",
+        "trusted diamond store",
+        "reliable diamond jewelry"
+    ],
 };
 
 export default async function Home(_props: PageProps<'/'>) {

@@ -17,7 +17,10 @@ import {
     truncateDescription,
     buildCanonicalUrl,
     buildOgImages,
+    SITE_URL,
 } from '@/lib/metadata';
+import { Breadcrumbs } from '@/components/seo/breadcrumbs';
+import { generateProductSchema, generateFAQSchema, JsonLd } from '@/lib/seo/schema';
 
 async function getProductData(slug: string) {
     'use cache';
@@ -80,9 +83,63 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
     // Get the primary collection (prefer deepest nested / most specific)
     const primaryCollection = product.collections?.find(c => c.parent?.id) ?? product.collections?.[0];
 
+    // Get product price (use first variant's price)
+    const productPrice = product.variants?.[0]?.priceWithTax || 0;
+    const currencyCode = 'USD'; // You may want to get this from the active channel
+
+    // Generate product schema
+    const productSchema = generateProductSchema({
+        name: product.name,
+        description: product.description || undefined,
+        images: product.assets?.map(asset => asset.preview || asset.source).filter(Boolean) || [],
+        sku: product.variants?.[0]?.sku,
+        price: productPrice / 100, // Convert from cents if needed
+        currency: currencyCode,
+        url: `${SITE_URL}/product/${product.slug}`,
+        inStock: (product.variants?.[0]?.stockLevel ?? 0) > 0,
+    });
+
+    // Generate FAQ schema
+    const faqSchema = generateFAQSchema([
+        {
+            question: "What are your shipping options?",
+            answer: "We offer standard shipping (5-7 business days), express shipping (2-3 business days), and next-day delivery for select areas. Free standard shipping is available on orders over $50.",
+        },
+        {
+            question: "What is your return policy?",
+            answer: "We accept returns within 30 days of purchase. Items must be unused and in their original packaging. Simply contact our support team to initiate a return and receive a prepaid shipping label.",
+        },
+        {
+            question: "How can I track my order?",
+            answer: "Once your order ships, you'll receive an email with a tracking number. You can also view your order status anytime by logging into your account and visiting the order history section.",
+        },
+        {
+            question: "Do you offer international shipping?",
+            answer: "Yes! We ship to over 50 countries worldwide. International shipping rates and delivery times vary by location. You can see the exact cost at checkout before completing your purchase.",
+        },
+    ]);
+
+    // Build breadcrumbs
+    const breadcrumbItems = [
+        { name: "Jewelry", href: "/jewelry" },
+    ];
+    if (primaryCollection) {
+        breadcrumbItems.push({
+            name: primaryCollection.name,
+            href: `/collection/${primaryCollection.slug}`,
+        });
+    }
+    breadcrumbItems.push({
+        name: product.name,
+        href: `/product/${product.slug}`,
+    });
+
     return (
         <>
+            <JsonLd data={productSchema} />
+            <JsonLd data={faqSchema} />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                <Breadcrumbs items={breadcrumbItems} />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20">
                     {/* Left Column: Image Carousel */}
                     <div className="lg:sticky lg:top-24 lg:self-start">

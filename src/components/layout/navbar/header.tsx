@@ -186,7 +186,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             </button>
 
                             {activeDropdown === 'engagement' && (
-                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl rounded-lg z-50 rounded-tl-none animate-fade-in-scale" style={{ animationDuration: '200ms' }}>
+                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl rounded-3xl z-50 rounded-tl-none animate-fade-in-scale" style={{ animationDuration: '200ms' }}>
                                     <div className="p-6 grid grid-cols-2 gap-6">
                                         {Object.entries(engagementCategories).map(
                                             ([category, items]) => (
@@ -226,7 +226,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             </button>
 
                             {activeDropdown === 'wedding' && (
-                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl border rounded-lg z-50 rounded-tl-none animate-fade-in-scale" style={{ animationDuration: '200ms' }}>
+                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl rounded-3xl z-50 rounded-tl-none animate-fade-in-scale" style={{ animationDuration: '200ms' }}>
                                     <div className="p-6 grid grid-cols-2 gap-6">
                                         {Object.entries(weddingCategories).map(
                                             ([category, items]) => (
@@ -264,7 +264,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
 
                         {/* About */}
                         <Link
-                            href="/about"
+                            href="/about-us"
                             className="py-4 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors"
                         >
                             About Us
@@ -453,7 +453,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                                 </Link>
 
                                 <Link
-                                    href="/about"
+                                    href="/about-us"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="block py-3 px-4 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] rounded-lg font-normal transition-colors"
                                 >
