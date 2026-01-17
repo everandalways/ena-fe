@@ -36,8 +36,9 @@ function LoginFormSkeleton() {
 async function SignInContent({searchParams}: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
     const resolvedParams = await searchParams;
     const redirectTo = resolvedParams?.redirectTo as string | undefined;
+    const oauthError = resolvedParams?.error as string | undefined;
 
-    return <LoginForm redirectTo={redirectTo}/>;
+    return <LoginForm redirectTo={redirectTo} oauthError={oauthError}/>;
 }
 
 export default async function SignInPage({searchParams}: PageProps<'/sign-in'>) {

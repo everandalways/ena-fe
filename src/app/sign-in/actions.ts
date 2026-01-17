@@ -1,10 +1,10 @@
 'use server';
 
-import {mutate} from '@/lib/vendure/api';
-import {LoginMutation, LogoutMutation} from '@/lib/vendure/mutations';
-import {removeAuthToken, setAuthToken} from '@/lib/auth';
-import {redirect} from "next/navigation";
-import {revalidatePath} from "next/cache";
+import { mutate } from '@/lib/vendure/api';
+import { LoginMutation, LogoutMutation } from '@/lib/vendure/mutations';
+import { removeAuthToken, setAuthToken } from '@/lib/auth';
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function loginAction(prevState: { error?: string } | undefined, formData: FormData) {
     const username = formData.get('username') as string;
