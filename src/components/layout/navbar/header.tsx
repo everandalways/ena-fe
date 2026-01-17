@@ -256,8 +256,8 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
 
                         {/* Custom Jewelry */}
                         <Link
-                            href="/search?q=custom"
-                            className="py-4 text-[hsl(var(--lead-text))] hover:text-gray-900 font-normal transition-colors"
+                            href="/custom"
+                            className="py-4 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors"
                         >
                             Custom Jewelry
                         </Link>
@@ -265,7 +265,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                         {/* About */}
                         <Link
                             href="/about"
-                            className="py-4 text-[hsl(var(--lead-text))] hover:text-gray-900 font-normal transition-colors"
+                            className="py-4 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors"
                         >
                             About Us
                         </Link>
@@ -445,7 +445,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                                 ))}
 
                                 <Link
-                                    href="/search?q=custom"
+                                    href="/custom"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="block py-3 px-4 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] rounded-lg font-normal transition-colors"
                                 >
