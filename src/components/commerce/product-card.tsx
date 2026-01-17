@@ -36,7 +36,7 @@ export function ProductCard({product: productProp}: ProductCardProps) {
     return (
         <Link
             href={`/product/${product.slug}`}
-            className="group block bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow"
+            className="group block bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-all duration-300 ease-out hover:-translate-y-1"
         >
             <div className="aspect-square relative bg-muted">
                 {normalizedImageSrc && !imageError ? (

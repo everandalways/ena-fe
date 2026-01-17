@@ -90,7 +90,7 @@ export function LoginForm({ redirectTo, oauthError }: LoginFormProps) {
     }, [oauthError]);
 
     return (
-        <Card>
+        <Card className="animate-fade-in-scale">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <CardContent className="space-y-4">

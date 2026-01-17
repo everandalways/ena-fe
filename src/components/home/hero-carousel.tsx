@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
@@ -141,13 +142,19 @@ export function HeroCarousel() {
                   transition={{ delay: 0.5 }}
                   className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-4 sm:pt-6 w-full sm:w-auto"
                 >
-                  <button className="btn-luxury text-[hsl(var(--secondary))] hover:text-[hsl(var(--background))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal tracking-wide w-full sm:w-auto flex items-center justify-center cursor-pointer">
+                  <Link
+                    href="/search"
+                    className="btn-luxury text-[hsl(var(--secondary))] hover:text-[hsl(var(--background))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal tracking-wide w-full sm:w-auto flex items-center justify-center cursor-pointer"
+                  >
                     <Calendar className="w-4 h-4 mr-2" />
                     View Collection
-                  </button>
-                  <button className="bg-[hsl(var(--card))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal border border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] transition-all duration-500 tracking-wide w-full sm:w-auto rounded-lg cursor-pointer">
+                  </Link>
+                  <Link
+                    href="/consultation"
+                    className="bg-[hsl(var(--card))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal border border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] transition-all duration-500 tracking-wide w-full sm:w-auto rounded-lg cursor-pointer flex items-center justify-center"
+                  >
                     Book Consultation
-                  </button>
+                  </Link>
                 </motion.div>
               </motion.div>
             </div>

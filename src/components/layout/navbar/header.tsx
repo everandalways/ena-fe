@@ -102,7 +102,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={() => setIsMobileMenuOpen(true)}
-                                className="lg:hidden p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors cursor-pointer"
+                                className="lg:hidden p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-all duration-200 ease-out hover:scale-110 active:scale-95 cursor-pointer"
                             >
                                 <Menu className="w-6 h-6 text-[hsl(var(--lead-text))]" />
                             </button>
@@ -123,7 +123,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             {/* Search Button - Opens Modal */}
                             <button
                                 onClick={() => setShowSearch(true)}
-                                className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors cursor-pointer"
+                                className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-all duration-200 ease-out hover:scale-110 active:scale-95 cursor-pointer"
                                 aria-label="Search"
                             >
                                 <Search className="w-5 h-5 text-[hsl(var(--lead-text))]" />
@@ -134,7 +134,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                                 <button
                                     onClick={toggleTheme}
                                     aria-label="Toggle theme"
-                                    className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors cursor-pointer"
+                                    className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-all duration-200 ease-out hover:scale-110 active:scale-95 cursor-pointer"
                                 >
                                     {theme === 'dark' ? (
                                         <Sun className="w-5 h-5 text-[hsl(var(--lead-text))]" />
@@ -186,7 +186,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             </button>
 
                             {activeDropdown === 'engagement' && (
-                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl rounded-lg z-50 rounded-tl-none">
+                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl rounded-lg z-50 rounded-tl-none animate-fade-in-scale" style={{ animationDuration: '200ms' }}>
                                     <div className="p-6 grid grid-cols-2 gap-6">
                                         {Object.entries(engagementCategories).map(
                                             ([category, items]) => (
@@ -226,7 +226,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             </button>
 
                             {activeDropdown === 'wedding' && (
-                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl border rounded-lg z-50 rounded-tl-none">
+                                <div className="absolute top-full left-0 w-96 bg-[hsl(var(--card))] shadow-2xl border rounded-lg z-50 rounded-tl-none animate-fade-in-scale" style={{ animationDuration: '200ms' }}>
                                     <div className="p-6 grid grid-cols-2 gap-6">
                                         {Object.entries(weddingCategories).map(
                                             ([category, items]) => (
@@ -351,11 +351,11 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
             {isMobileMenuOpen && (
                 <div className="fixed inset-0 z-50 lg:hidden">
                     <div
-                        className="absolute inset-0 bg-black bg-opacity-50"
+                        className="absolute inset-0 bg-black bg-opacity-50 animate-fade-in"
                         onClick={() => setIsMobileMenuOpen(false)}
                     />
 
-                    <div className="absolute left-0 top-0 bottom-0 w-80 bg-[hsl(var(--card))] shadow-xl overflow-y-auto">
+                    <div className="absolute left-0 top-0 bottom-0 w-80 bg-[hsl(var(--card))] shadow-xl overflow-y-auto animate-slide-in-left">
                         <div className="p-4 border-b border-[hsl(var(--border))]">
                             <div className="flex items-center justify-between">
                                 <Link

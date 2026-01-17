@@ -64,7 +64,7 @@ export default function RootLayout({children}: LayoutProps<'/'>) {
             >
                 <ThemeProvider>
                     <Navbar />
-                    <main>
+                    <main className="page-enter">
                         {children}
                     </main>
                     <Footer />
