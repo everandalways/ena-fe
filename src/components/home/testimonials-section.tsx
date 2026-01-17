@@ -195,7 +195,7 @@ export function TestimonialsSection() {
                   </div>
 
                   <div className="pt-4">
-                    <button className="btn-luxury w-full text-sm font-semibold py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:translate-y-0">
+                    <button className="btn-luxury w-full text-sm font-semibold py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 cursor-pointer">
                       View Details →
                     </button>
                   </div>

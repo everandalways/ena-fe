@@ -89,15 +89,15 @@ export default async function CollectionPage({params, searchParams}: PageProps<'
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* Filters Sidebar */}
-                <aside className="lg:col-span-1">
+                {/* Filters Sidebar - Order 1 on mobile, 1 on desktop */}
+                <aside className="lg:col-span-1 order-1">
                     <Suspense fallback={<div className="h-64 animate-pulse bg-muted rounded-lg" />}>
                         <FacetFilters productDataPromise={productDataPromise} />
                     </Suspense>
                 </aside>
 
-                {/* Product Grid */}
-                <div className="lg:col-span-3">
+                {/* Product Grid - Order 2 on mobile, 2 on desktop */}
+                <div className="lg:col-span-3 order-2">
                     <Suspense fallback={<ProductGridSkeleton />}>
                         <ProductGrid productDataPromise={productDataPromise} currentPage={page} take={12} />
                     </Suspense>

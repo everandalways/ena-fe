@@ -135,9 +135,8 @@ export function DiamondSelector() {
                   onClick={() => setSelectedDiamond(diamond.id)}
                   onMouseEnter={() => setHoveredDiamond(diamond.id)}
                   onMouseLeave={() => setHoveredDiamond(null)}
-                  className={`absolute w-20 h-20 rounded-full transition-all duration-300 flex items-center justify-center group relative ${
-                    isActive ? 'z-50' : ''
-                  }`}
+                  className={`absolute w-20 h-20 rounded-full transition-all duration-300 flex items-center justify-center group relative cursor-pointer ${isActive ? 'z-50' : ''
+                    }`}
                   style={{
                     top: diamond.position.top,
                     left: diamond.position.left,
@@ -149,20 +148,18 @@ export function DiamondSelector() {
                 >
                   {/* Animated background glow */}
                   <div
-                    className={`absolute inset-0 rounded-full blur-lg opacity-0 transition-all duration-300 ${
-                      isActive
-                        ? `bg-gradient-to-br ${diamond.color} opacity-60 animate-pulse`
-                        : ''
-                    }`}
+                    className={`absolute inset-0 rounded-full blur-lg opacity-0 transition-all duration-300 ${isActive
+                      ? `bg-gradient-to-br ${diamond.color} opacity-60 animate-pulse`
+                      : ''
+                      }`}
                   ></div>
 
                   {/* Main button container */}
                   <div
-                    className={`absolute inset-0 rounded-full transition-all duration-300 ${
-                      isActive
-                        ? `bg-gradient-to-br ${diamond.color} shadow-2xl`
-                        : 'bg-white shadow-lg hover:shadow-xl border border-[hsl(var(--primary))]/10'
-                    }`}
+                    className={`absolute inset-0 rounded-full transition-all duration-300 ${isActive
+                      ? `bg-gradient-to-br ${diamond.color} shadow-2xl`
+                      : 'bg-white shadow-lg hover:shadow-xl border border-[hsl(var(--primary))]/10'
+                      }`}
                   ></div>
 
                   {/* Diamond Image */}
@@ -176,17 +173,15 @@ export function DiamondSelector() {
 
                   {/* Tooltip */}
                   <div
-                    className={`absolute bottom-full mb-3 px-4 py-2 bg-gradient-to-r ${diamond.color} text-slate-900 text-sm font-luxury-sans font-semibold rounded-lg transition-all duration-200 whitespace-nowrap shadow-xl backdrop-blur-sm ${
-                      isHovered
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-2 pointer-events-none'
-                    }`}
+                    className={`absolute bottom-full mb-3 px-4 py-2 bg-gradient-to-r ${diamond.color} text-slate-900 text-sm font-luxury-sans font-semibold rounded-lg transition-all duration-200 whitespace-nowrap shadow-xl backdrop-blur-sm ${isHovered
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-2 pointer-events-none'
+                      }`}
                   >
                     {diamond.name}
                     <div
-                      className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-[hsl(var(--primary))] ${
-                        isHovered ? '' : ''
-                      }`}
+                      className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-[hsl(var(--primary))] ${isHovered ? '' : ''
+                        }`}
                     ></div>
                   </div>
 

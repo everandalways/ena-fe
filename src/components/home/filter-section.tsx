@@ -257,7 +257,7 @@ export function FilterSection({ facetValues = [] }: FilterSectionProps) {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-8 pt-8 border-t border-[hsl(var(--border))]">
             <button
-              className="btn-luxury hover:text-[hsl(var(--primary))] flex-1 flex items-center justify-center"
+              className="btn-luxury hover:text-[hsl(var(--primary))] flex-1 flex items-center justify-center cursor-pointer"
               onClick={navigateToSearch}
             >
               <Search className="w-5 h-5 mr-2" />
@@ -265,7 +265,7 @@ export function FilterSection({ facetValues = [] }: FilterSectionProps) {
             </button>
             <button
               type="button"
-              className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] px-4 py-2 rounded-lg hover:bg-[hsl(var(--muted))] transition-colors flex items-center justify-center"
+              className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] px-4 py-2 rounded-lg hover:bg-[hsl(var(--muted))] transition-colors flex items-center justify-center cursor-pointer"
               onClick={resetFilters}
             >
               <X className="w-5 h-5 mr-2" />

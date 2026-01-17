@@ -98,21 +98,21 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                     {/* Header main row */}
                     <div className="relative flex items-center justify-between gap-2 sm:gap-4">
                         {/* Left: Mobile Menu & Logo */}
-                        <div className="flex items-center space-x-1">
+                        <div className="flex items-center space-x-2 sm:space-x-3">
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={() => setIsMobileMenuOpen(true)}
-                                className="lg:hidden p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors"
+                                className="lg:hidden p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors cursor-pointer"
                             >
                                 <Menu className="w-6 h-6 text-[hsl(var(--lead-text))]" />
                             </button>
 
-                            {/* Logo — centered on desktop, inline on mobile */}
+                            {/* Logo — inline on mobile/tablet, centered on desktop */}
                             <Link
                                 href="/"
-                                className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-3"
+                                className="lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 flex items-center space-x-3"
                             >
-                                <h1 className="text-nowrap font-luxury-serif text-3xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--foreground))] leading-tight">
+                                <h1 className="text-nowrap font-luxury-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--foreground))] leading-tight">
                                     Ever & Always
                                 </h1>
                             </Link>
@@ -123,7 +123,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             {/* Search Button - Opens Modal */}
                             <button
                                 onClick={() => setShowSearch(true)}
-                                className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors"
+                                className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors cursor-pointer"
                                 aria-label="Search"
                             >
                                 <Search className="w-5 h-5 text-[hsl(var(--lead-text))]" />
@@ -134,7 +134,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                                 <button
                                     onClick={toggleTheme}
                                     aria-label="Toggle theme"
-                                    className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors"
+                                    className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg transition-colors cursor-pointer"
                                 >
                                     {theme === 'dark' ? (
                                         <Sun className="w-5 h-5 text-[hsl(var(--lead-text))]" />
@@ -180,7 +180,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             onMouseEnter={() => setActiveDropdown('engagement')}
                             onMouseLeave={() => setActiveDropdown(null)}
                         >
-                            <button className="flex items-center rounded-md hover:rounded-b-none space-x-4 px-2 py-1.5 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors">
+                            <button className="flex items-center rounded-md hover:rounded-b-none space-x-4 px-2 py-1.5 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors cursor-pointer">
                                 <span>Engagement Rings</span>
                                 <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
                             </button>
@@ -220,7 +220,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                             onMouseEnter={() => setActiveDropdown('wedding')}
                             onMouseLeave={() => setActiveDropdown(null)}
                         >
-                            <button className="flex items-center rounded-md hover:rounded-b-none space-x-4 px-2 py-1.5 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors">
+                            <button className="flex items-center rounded-md hover:rounded-b-none space-x-4 px-2 py-1.5 text-[hsl(var(--lead-text))] hover:text-[hsl(var(--foreground))] font-normal transition-colors cursor-pointer">
                                 <span>Wedding Rings</span>
                                 <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
                             </button>
@@ -337,7 +337,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                   border border-[hsl(var(--border))] 
                   hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--primary-foreground))] 
                   hover:border-[hsl(var(--primary))] 
-                  transition-all duration-200 font-luxury-sans font-medium"
+                  transition-all duration-200 font-luxury-sans font-medium cursor-pointer"
                                 >
                                     {term}
                                 </button>
@@ -369,7 +369,7 @@ export function Header({ cartQuantity, isSignedIn, collections }: HeaderProps) {
                                 </Link>
                                 <button
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg"
+                                    className="p-2 hover:text-[hsl(var(--foreground))] rounded-lg cursor-pointer"
                                 >
                                     <X className="w-5 h-5 text-[hsl(var(--lead-text))]" />
                                 </button>

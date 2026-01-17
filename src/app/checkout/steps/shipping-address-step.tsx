@@ -285,8 +285,20 @@ export default function ShippingAddressStep({ onComplete }: ShippingAddressStepP
       )}
 
       {addresses.length === 0 && (
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <>
+          {!dialogOpen && (
+            <div className="text-center py-8 space-y-4">
+              <p className="text-muted-foreground">
+                Please add a shipping address to continue
+              </p>
+              <Button onClick={() => setDialogOpen(true)}>
+                Add Shipping Address
+              </Button>
+            </div>
+          )}
+          
+          <Dialog open={dialogOpen} onOpenChange={(open) => setDialogOpen(open)}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <form onSubmit={handleSubmit(onSaveNewAddress)}>
               <DialogHeader>
                 <DialogTitle>Add shipping address</DialogTitle>
@@ -383,7 +395,15 @@ export default function ShippingAddressStep({ onComplete }: ShippingAddressStepP
               </FieldGroup>
 
               <DialogFooter>
-                <Button type="submit" disabled={saving} className="w-full">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setDialogOpen(false)} 
+                  disabled={saving}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={saving}>
                   {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Save address
                 </Button>
@@ -391,6 +411,7 @@ export default function ShippingAddressStep({ onComplete }: ShippingAddressStepP
             </form>
           </DialogContent>
         </Dialog>
+        </>
       )}
     </div>
   );

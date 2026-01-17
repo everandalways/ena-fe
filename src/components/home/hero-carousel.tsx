@@ -141,11 +141,11 @@ export function HeroCarousel() {
                   transition={{ delay: 0.5 }}
                   className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-4 sm:pt-6 w-full sm:w-auto"
                 >
-                  <button className="btn-luxury text-[hsl(var(--secondary))] hover:text-[hsl(var(--background))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal tracking-wide w-full sm:w-auto flex items-center justify-center">
+                  <button className="btn-luxury text-[hsl(var(--secondary))] hover:text-[hsl(var(--background))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal tracking-wide w-full sm:w-auto flex items-center justify-center cursor-pointer">
                     <Calendar className="w-4 h-4 mr-2" />
                     View Collection
                   </button>
-                  <button className="bg-[hsl(var(--card))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal border border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] transition-all duration-500 tracking-wide w-full sm:w-auto rounded-lg">
+                  <button className="bg-[hsl(var(--card))] px-8 sm:px-10 py-3 sm:py-3.5 text-sm sm:text-base font-normal border border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] transition-all duration-500 tracking-wide w-full sm:w-auto rounded-lg cursor-pointer">
                     Book Consultation
                   </button>
                 </motion.div>
@@ -166,10 +166,10 @@ export function HeroCarousel() {
                 className="object-cover object-center"
                 priority={currentSlide === 0}
               />
-              <div 
-                className="absolute inset-0 opacity-60 lg:opacity-100" 
+              <div
+                className="absolute inset-0 opacity-60 lg:opacity-100"
                 style={{
-                  background: 'linear-gradient(to bottom, transparent, transparent, hsl(var(--background))), linear-gradient(to right, hsl(var(--background)), hsl(var(--background) / 0.3), transparent)'
+                  background: 'linear-gradient(to bottom, transparent, transparent, linear-gradient(to right, transparent)'
                 }}
               />
             </motion.div>
@@ -187,16 +187,16 @@ export function HeroCarousel() {
         <button
           type="button"
           onClick={prevSlide}
-          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group z-30"
+          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group z-30 cursor-pointer"
         >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(var(--primary))] group-hover:text-[hsl(var(--secondary))]" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(var(--secondary))] group-hover:text-[hsl(var(--primary))]" />
         </button>
         <button
           type="button"
           onClick={nextSlide}
-          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group z-30"
+          className="pointer-events-auto bg-white/8 backdrop-blur-md hover:bg-white/15 border border-white/10 rounded-full p-3 sm:p-4 transition-all duration-300 hover:scale-110 group z-30 cursor-pointer"
         >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(var(--primary))] group-hover:text-[hsl(var(--secondary))]" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(var(--secondary))] group-hover:text-[hsl(var(--primary))]" />
         </button>
       </motion.div>
 
@@ -212,11 +212,10 @@ export function HeroCarousel() {
             key={index}
             onClick={() => goToSlide(index)}
             whileHover={{ scale: 1.2 }}
-            className={`transition-all duration-500 rounded-full ${
-              index === currentSlide
-                ? 'w-8 sm:w-10 h-2 sm:h-2.5 bg-gradient-to-r from-[hsl(var(--rose-gold))] to-[hsl(var(--rose-gold))]'
-                : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white hover:bg-white/40 border border-black/10'
-            }`}
+            className={`transition-all duration-500 rounded-full cursor-pointer ${index === currentSlide
+              ? 'w-8 sm:w-10 h-2 sm:h-2.5 bg-gradient-to-r from-[hsl(var(--rose-gold))] to-[hsl(var(--rose-gold))]'
+              : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white hover:bg-white/40 border border-black/10'
+              }`}
           />
         ))}
       </motion.div>
