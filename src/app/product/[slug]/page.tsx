@@ -11,7 +11,7 @@ import {
     AccordionTrigger,
 } from '@/components/ui/accordion';
 import { notFound } from 'next/navigation';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 import {
     SITE_NAME,
     truncateDescription,
@@ -22,13 +22,9 @@ import {
 import { Breadcrumbs } from '@/components/seo/breadcrumbs';
 import { generateProductSchema, generateFAQSchema, JsonLd } from '@/lib/seo/schema';
 
-async function getProductData(slug: string) {
-    'use cache';
-    cacheLife('hours');
-    cacheTag(`product-${slug}`);
-
+const getProductData = cache(async (slug: string) => {
     return await query(GetProductDetailQuery, { slug });
-}
+});
 
 export async function generateMetadata({
     params,
@@ -96,7 +92,7 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
         price: productPrice / 100, // Convert from cents if needed
         currency: currencyCode,
         url: `${SITE_URL}/product/${product.slug}`,
-        inStock: (product.variants?.[0]?.stockLevel ?? 0) > 0,
+        inStock: Number(product.variants?.[0]?.stockLevel ?? 0) > 0,
     });
 
     // Generate FAQ schema

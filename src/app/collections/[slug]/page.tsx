@@ -7,7 +7,7 @@ import { ProductGrid } from "@/components/commerce/product-grid";
 import { FacetFilters } from "@/components/commerce/facet-filters";
 import { ProductGridSkeleton } from "@/components/shared/product-grid-skeleton";
 import { buildSearchInput, getCurrentPage } from "@/lib/search-helpers";
-import { cacheLife, cacheTag } from "next/cache";
+import { cache } from "react";
 import {
   SITE_NAME,
   buildCanonicalUrl,
@@ -18,14 +18,10 @@ import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 import { generateCollectionSchema, JsonLd } from "@/lib/seo/schema";
 import { SITE_URL } from "@/lib/metadata";
 
-async function getCollectionProducts(
+const getCollectionProducts = cache(async (
   slug: string,
   searchParams: { [key: string]: string | string[] | undefined }
-) {
-  "use cache";
-  cacheLife("hours");
-  cacheTag(`collection-${slug}`);
-
+) => {
   // Build search input with collection-specific filters
   const searchInput = buildSearchInput({
     searchParams,
@@ -36,49 +32,52 @@ async function getCollectionProducts(
   return query(SearchProductsQuery, {
     input: searchInput,
   });
-}
+});
 
+// Return empty array to make this route dynamic (on-demand generation)
+// This avoids build issues with cacheComponents during static generation
 export async function generateStaticParams() {
-  // This will be populated with actual collection slugs from your SEO collections
-  const { getAllSEOCollectionSlugs } = await import("@/lib/seo/collections");
-  const slugs = getAllSEOCollectionSlugs();
-  
-  return slugs.map((slug) => ({
-    slug,
-  }));
+  return [];
 }
 
 export async function generateMetadata({
   params,
 }: PageProps<"/collections/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
-  const seoCollection = getSEOCollection(slug);
+  try {
+    const { slug } = await params;
+    const seoCollection = getSEOCollection(slug);
 
-  if (!seoCollection) {
+    if (!seoCollection) {
+      return {
+        title: "Collection Not Found",
+      };
+    }
+
     return {
-      title: "Collection Not Found",
+      title: seoCollection.title,
+      description: seoCollection.metaDescription,
+      keywords: seoCollection.keywords,
+      alternates: {
+        canonical: buildCanonicalUrl(`/collections/${slug}`),
+      },
+      openGraph: {
+        title: seoCollection.title,
+        description: seoCollection.metaDescription,
+        type: "website",
+        url: buildCanonicalUrl(`/collections/${slug}`),
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: seoCollection.title,
+        description: seoCollection.metaDescription,
+      },
+    };
+  } catch (error) {
+    // Fallback metadata if generation fails during build
+    return {
+      title: "Collection",
     };
   }
-
-  return {
-    title: seoCollection.title,
-    description: seoCollection.metaDescription,
-    keywords: seoCollection.keywords,
-    alternates: {
-      canonical: buildCanonicalUrl(`/collections/${slug}`),
-    },
-    openGraph: {
-      title: seoCollection.title,
-      description: seoCollection.metaDescription,
-      type: "website",
-      url: buildCanonicalUrl(`/collections/${slug}`),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: seoCollection.title,
-      description: seoCollection.metaDescription,
-    },
-  };
 }
 
 export default async function SEOCollectionPage({

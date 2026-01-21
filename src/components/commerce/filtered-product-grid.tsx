@@ -1,11 +1,12 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ResultOf } from '@/graphql';
+import { ResultOf, readFragment } from '@/graphql';
 import { ProductCard } from './product-card';
 import { Pagination } from '@/components/shared/pagination';
 import { SortDropdown } from './sort-dropdown';
 import { SearchProductsQuery } from '@/lib/vendure/queries';
+import { ProductCardFragment } from '@/lib/vendure/fragments';
 import { use } from 'react';
 
 interface FilteredProductGridProps {
@@ -38,7 +39,8 @@ export function FilteredProductGrid({
     const min = minPrice || 0;
     const max = maxPrice || Infinity;
 
-    return searchResult.items.filter((product) => {
+    return searchResult.items.filter((productRef) => {
+      const product = readFragment(ProductCardFragment, productRef);
       const price = product.priceWithTax;
       let productPrice: number;
 

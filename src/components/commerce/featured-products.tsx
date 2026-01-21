@@ -1,12 +1,9 @@
 import {ProductCarousel} from "@/components/commerce/product-carousel";
-import {cacheLife} from "next/cache";
+import {cache} from "react";
 import {query} from "@/lib/vendure/api";
 import {GetCollectionProductsQuery} from "@/lib/vendure/queries";
 
-async function getFeaturedCollectionProducts() {
-    'use cache'
-    cacheLife('days')
-
+const getFeaturedCollectionProducts = cache(async () => {
     // Fetch featured products from a specific collection
     // Replace 'featured' with your actual collection slug
     const result = await query(GetCollectionProductsQuery, {
@@ -20,7 +17,7 @@ async function getFeaturedCollectionProducts() {
     });
 
     return result.data.search.items;
-}
+});
 
 
 export async function FeaturedProducts() {

@@ -8,8 +8,17 @@ export async function setAuthToken(token: string) {
 }
 
 export async function getAuthToken(): Promise<string | undefined> {
-    const cookieStore = await cookies();
-    return cookieStore.get(AUTH_TOKEN_COOKIE)?.value;
+    try {
+        const cookieStore = await cookies();
+        return cookieStore.get(AUTH_TOKEN_COOKIE)?.value;
+    } catch (error: any) {
+        // During build/prerender, cookies() may not be available
+        // Return undefined to allow the route to be dynamic at runtime
+        if (error?.digest === 'HANGING_PROMISE_REJECTION' || error?.message?.includes('cookies()')) {
+            return undefined;
+        }
+        throw error;
+    }
 }
 
 export async function removeAuthToken() {

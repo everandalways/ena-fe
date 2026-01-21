@@ -1,7 +1,12 @@
-import {NextConfig} from 'next';
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-    cacheComponents: true,
+    // cacheComponents disabled - causes build issues with dynamic routes
+    // Using React cache() instead for data caching
+    // Fix workspace root warning by explicitly setting the root
+    turbopack: {
+        root: process.cwd(),
+    },
     images: {
         // This is necessary to display images from your local Vendure instance
         dangerouslyAllowLocalIP: true,

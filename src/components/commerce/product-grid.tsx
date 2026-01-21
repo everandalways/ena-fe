@@ -3,7 +3,6 @@ import {ProductCard} from './product-card';
 import {Pagination} from '@/components/shared/pagination';
 import {SortDropdown} from './sort-dropdown';
 import {SearchProductsQuery} from "@/lib/vendure/queries";
-import {getActiveChannel} from '@/lib/vendure/actions';
 
 interface ProductGridProps {
     productDataPromise: Promise<{
@@ -15,10 +14,7 @@ interface ProductGridProps {
 }
 
 export async function ProductGrid({productDataPromise, currentPage, take}: ProductGridProps) {
-    const [result, channel] = await Promise.all([
-        productDataPromise,
-        getActiveChannel(),
-    ]);
+    const result = await productDataPromise;
 
     const searchResult = result.data.search;
     const totalPages = Math.ceil(searchResult.totalItems / take);

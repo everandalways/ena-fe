@@ -7,7 +7,7 @@ import { FilteredProductGrid } from "@/components/commerce/filtered-product-grid
 import { FacetFilters } from "@/components/commerce/facet-filters";
 import { ProductGridSkeleton } from "@/components/shared/product-grid-skeleton";
 import { buildSearchInput, getCurrentPage } from "@/lib/search-helpers";
-import { cacheLife, cacheTag } from "next/cache";
+import { cache } from "react";
 import {
   SITE_NAME,
   buildCanonicalUrl,
@@ -17,13 +17,9 @@ import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 import { generateCollectionSchema, JsonLd } from "@/lib/seo/schema";
 import { SITE_URL } from "@/lib/metadata";
 
-async function getPriceFilteredProducts(
+const getPriceFilteredProducts = cache(async (
   searchParams: { [key: string]: string | string[] | undefined }
-) {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("price-products");
-
+) => {
   const searchInput = buildSearchInput({
     searchParams,
   });
@@ -31,14 +27,12 @@ async function getPriceFilteredProducts(
   return query(SearchProductsQuery, {
     input: searchInput,
   });
-}
+});
 
+// Return empty array to make this route dynamic (on-demand generation)
+// This avoids build issues with cacheComponents during static generation
 export async function generateStaticParams() {
-  const slugs = getAllPricePageSlugs();
-  
-  return slugs.map((slug) => ({
-    slug,
-  }));
+  return [];
 }
 
 export async function generateMetadata({

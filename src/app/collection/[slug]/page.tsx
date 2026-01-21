@@ -6,7 +6,7 @@ import { ProductGrid } from '@/components/commerce/product-grid';
 import { FacetFilters } from '@/components/commerce/facet-filters';
 import { ProductGridSkeleton } from '@/components/shared/product-grid-skeleton';
 import { buildSearchInput, getCurrentPage } from '@/lib/search-helpers';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 import {
     SITE_NAME,
     truncateDescription,
@@ -17,29 +17,21 @@ import {
 import { Breadcrumbs } from '@/components/seo/breadcrumbs';
 import { generateCollectionSchema, JsonLd } from '@/lib/seo/schema';
 
-async function getCollectionProducts(slug: string, searchParams: { [key: string]: string | string[] | undefined }) {
-    'use cache';
-    cacheLife('hours');
-    cacheTag(`collection-${slug}`);
-
+const getCollectionProducts = cache(async (slug: string, searchParams: { [key: string]: string | string[] | undefined }) => {
     return query(SearchProductsQuery, {
         input: buildSearchInput({
             searchParams,
             collectionSlug: slug
         })
     });
-}
+});
 
-async function getCollectionMetadata(slug: string) {
-    'use cache';
-    cacheLife('hours');
-    cacheTag(`collection-meta-${slug}`);
-
+const getCollectionMetadata = cache(async (slug: string) => {
     return query(GetCollectionProductsQuery, {
         slug,
         input: { take: 0, collectionSlug: slug, groupByProduct: true },
     });
-}
+});
 
 export async function generateMetadata({
     params,

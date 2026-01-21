@@ -1,13 +1,9 @@
-import {cacheLife} from 'next/cache';
 import {getTopCollections} from '@/lib/vendure/cached';
 import Image from "next/image";
 import Link from "next/link";
 
 
-async function Copyright() {
-    'use cache'
-    cacheLife('days');
-
+function Copyright() {
     return (
         <div>
             © {new Date().getFullYear()} Vendure Store. All rights reserved.
@@ -16,9 +12,6 @@ async function Copyright() {
 }
 
 export async function Footer() {
-    'use cache'
-    cacheLife('days');
-
     const collections = await getTopCollections();
 
     return (
